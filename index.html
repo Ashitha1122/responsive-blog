@@ -1,0 +1,288 @@
+<!-- index.html
+   Responsive Blog Website for Task 2
+   Save this file and open in browser. Replace dummy content/images with your real posts.
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Responsive Blog</title>
+  <meta name="description" content="Responsive blog website - Task 2 example" />
+  <style>
+    /* Reset & base */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html,body { height:100%; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:#222; line-height:1.5; background:#f7f7f8; }
+    a { color: inherit; text-decoration: none; }
+    img { display:block; max-width:100%; height:auto; }
+
+    /* Layout containers */
+    .container { max-width:1100px; margin:0 auto; padding:20px; }
+
+    /* Header & nav */
+    header.site-header { background:#ffffff; border-bottom:1px solid #e6e6e6; position:sticky; top:0; z-index:50; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 20px; }
+    .brand { display:flex; align-items:center; gap:10px; font-weight:700; font-size:1.1rem; }
+    .brand .logo { width:44px; height:44px; background:linear-gradient(135deg,#3b82f6,#8b5cf6); border-radius:8px; display:flex; align-items:center; justify-content:center; color:white; font-weight:800; }
+    nav.main-nav { display:flex; gap:14px; align-items:center; }
+    nav.main-nav a { padding:8px 12px; border-radius:8px; color:#333; font-weight:500; }
+    nav.main-nav a:hover { background:#f1f5f9; }
+
+    /* Mobile menu button */
+    .menu-btn { display:none; background:none; border:0; font-size:1.25rem; padding:8px; cursor:pointer; }
+
+    /* Page layout */
+    .page { display:grid; grid-template-columns: 1fr 320px; gap:28px; margin-top:22px; }
+    main.content { background:#fff; border-radius:12px; box-shadow: 0 6px 18px rgba(12,20,40,0.04); padding:18px; }
+    aside.sidebar { background:#fff; border-radius:12px; box-shadow: 0 6px 18px rgba(12,20,40,0.04); padding:18px; height:fit-content; position:relative; }
+
+    /* Post card */
+    .post { margin-bottom:22px; border-radius:10px; overflow:hidden; border:1px solid #eee; }
+    .post .post-media { max-height:360px; overflow:hidden; }
+    .post .post-body { padding:14px; }
+    .post .meta { color:#6b7280; font-size:0.9rem; margin-bottom:8px; display:flex; gap:12px; align-items:center; }
+    .post h2 { font-size:1.25rem; margin-bottom:8px; }
+    .post p.summary { color:#374151; margin-bottom:10px; }
+    .post .actions { display:flex; gap:10px; align-items:center; }
+    .btn { display:inline-block; padding:8px 12px; border-radius:8px; background:#3b82f6; color:white; font-weight:600; cursor:pointer; border:0; }
+    .btn.ghost { background:transparent; color:#3b82f6; border:1px solid #dbeafe; font-weight:600; }
+
+    /* Sidebar items */
+    .widget { margin-bottom:18px; }
+    .widget h3 { font-size:1rem; margin-bottom:10px; }
+    .recent-list { list-style:none; display:flex; flex-direction:column; gap:10px; }
+    .recent-list li { display:flex; gap:10px; align-items:center; }
+    .recent-list img { width:64px; height:44px; object-fit:cover; border-radius:6px; }
+    .category-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+    .search { display:flex; gap:8px; }
+
+    /* Footer */
+    footer.site-footer { margin-top:28px; padding:20px 0; text-align:center; color:#6b7280; font-size:0.95rem; }
+
+    /* Responsive & small screens */
+    @media (max-width: 980px) {
+      .page { grid-template-columns: 1fr; }
+      .sidebar { order:2; }
+      main.content { order:1; }
+      nav.main-nav { display:none; position:absolute; left:0; right:0; top:64px; background:#fff; border-top:1px solid #eee; flex-direction:column; padding:12px 20px; gap:6px; display:flex; }
+      .menu-btn { display:inline-block; }
+      .topbar { position:relative; }
+    }
+
+    @media (max-width: 520px) {
+      .brand { font-size:1rem; }
+      .post h2 { font-size:1.05rem; }
+      .post .post-media { max-height:220px; }
+    }
+
+    /* small helper classes */
+    .muted { color:#6b7280; font-size:0.92rem; }
+    .tag { display:inline-block; background:#eef2ff; color:#4c1d95; padding:4px 8px; border-radius:999px; font-weight:600; font-size:0.82rem; }
+    .hidden { display:none !important; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container topbar">
+      <div class="brand">
+        <div class="logo">B</div>
+        <div>
+          <div>Ashitha's Blog</div>
+          <div class="muted" style="font-size:0.82rem">Thoughts • Tutorials • Projects</div>
+        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#posts">Posts</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div style="display:flex; gap:8px; align-items:center;">
+        <button class="menu-btn" id="menuToggle" aria-label="Toggle menu">☰</button>
+        <button class="btn" id="sidebarToggle">Toggle Sidebar</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container page">
+    <main class="content" id="home" tabindex="-1">
+      <!-- Featured post -->
+      <section class="post featured">
+        <div class="post-media">
+          <img src="https://picsum.photos/seed/featured/1200/420" alt="Featured blog image">
+        </div>
+        <div class="post-body">
+          <div class="meta"><span class="muted">Aug 11, 2025</span><span>•</span><span class="tag">Featured</span></div>
+          <h2>Welcome to My Responsive Blog</h2>
+          <p class="summary" id="featuredSummary">This is a fully responsive blog layout built to meet Task 2 requirements — header, responsive navigation, sidebar, post list, and interactive elements. It uses simple HTML, CSS and vanilla JavaScript so you can host it anywhere. <span class="more-dot">...</span><span class="more-text hidden">This sample demonstrates toggling summaries, a mobile-friendly nav, and a sidebar that can be shown/hidden with a button. Replace these sample posts with your content and push to GitHub to submit your task.</span></p>
+          <div class="actions">
+            <button class="btn read-more" data-target="featured">Read more</button>
+            <a class="btn ghost" href="#posts">See all posts</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Posts list -->
+      <section id="posts" style="margin-top:18px;">
+        <!-- Post 1 -->
+        <article class="post">
+          <div class="post-media"><img src="https://picsum.photos/seed/post1/1000/520" alt="Post image 1"></div>
+          <div class="post-body">
+            <div class="meta"><span class="muted">Aug 10, 2025</span><span>•</span><span class="muted">Web Development</span></div>
+            <h2>How to Build a Responsive Layout</h2>
+            <p class="summary">Learn practical steps for creating responsive layouts using CSS grid, flexbox, and media queries. <span class="more-dot">...</span><span class="more-text hidden">This article covers breakpoints, fluid typography, image handling, and accessibility best practices so your site works on phones, tablets, and desktops.</span></p>
+            <div class="actions">
+              <button class="btn read-more" data-target="p1">Read more</button>
+              <a class="btn ghost" href="#contact">Share</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 2 -->
+        <article class="post">
+          <div class="post-media"><img src="https://picsum.photos/seed/post2/1000/520" alt="Post image 2"></div>
+          <div class="post-body">
+            <div class="meta"><span class="muted">Aug 8, 2025</span><span>•</span><span class="muted">JavaScript</span></div>
+            <h2>Adding Interactive Elements with Vanilla JS</h2>
+            <p class="summary">Small JS enhancements can greatly improve UX without heavy frameworks. <span class="more-dot">...</span><span class="more-text hidden">We'll explore toggles, accordions, lazy-loading images, and event delegation — all with plain JavaScript to keep your site fast and simple.</span></p>
+            <div class="actions">
+              <button class="btn read-more" data-target="p2">Read more</button>
+              <a class="btn ghost" href="#about">Save</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 3 -->
+        <article class="post">
+          <div class="post-media"><img src="https://picsum.photos/seed/post3/1000/520" alt="Post image 3"></div>
+          <div class="post-body">
+            <div class="meta"><span class="muted">Jul 30, 2025</span><span>•</span><span class="muted">Projects</span></div>
+            <h2>Project: Personal Portfolio Step-By-Step</h2>
+            <p class="summary">A practical guide to building your portfolio and showcasing projects to employers. <span class="more-dot">...</span><span class="more-text hidden">Includes sections on writing good README files, deploying with GitHub Pages, and structuring project folders for maximum clarity.</span></p>
+            <div class="actions">
+              <button class="btn read-more" data-target="p3">Read more</button>
+              <a class="btn ghost" href="#contact">Comment</a>
+            </div>
+          </div>
+        </article>
+
+      </section>
+    </main>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="widget">
+        <h3>Search</h3>
+        <form class="search" onsubmit="event.preventDefault(); alert('Search demo — replace with real search logic');">
+          <input type="text" placeholder="Search posts..." style="flex:1;padding:8px;border-radius:8px;border:1px solid #e6e6e6" />
+          <button class="btn" type="submit">Go</button>
+        </form>
+      </div>
+
+      <div class="widget">
+        <h3>Recent Posts</h3>
+        <ul class="recent-list">
+          <li><img src="https://picsum.photos/seed/r1/120/80" alt=""><div><a href="#posts">How to Build a Responsive Layout</a><div class="muted" style="font-size:0.85rem">Aug 10, 2025</div></div></li>
+          <li><img src="https://picsum.photos/seed/r2/120/80" alt=""><div><a href="#posts">Interactive Elements with Vanilla JS</a><div class="muted" style="font-size:0.85rem">Aug 8, 2025</div></div></li>
+          <li><img src="https://picsum.photos/seed/r3/120/80" alt=""><div><a href="#posts">Personal Portfolio Guide</a><div class="muted" style="font-size:0.85rem">Jul 30, 2025</div></div></li>
+        </ul>
+      </div>
+
+      <div class="widget">
+        <h3>Categories</h3>
+        <ul class="category-list">
+          <li><a href="#posts">Web Development</a></li>
+          <li><a href="#posts">JavaScript</a></li>
+          <li><a href="#posts">Projects</a></li>
+          <li><a href="#posts">Tutorials</a></li>
+        </ul>
+      </div>
+
+      <div class="widget">
+        <h3>About Me</h3>
+        <p class="muted" style="font-size:0.95rem">Hi — I'm Ashitha. I build web projects and write short tutorials about front-end development, JS, and portfolio tips.</p>
+      </div>
+
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      © 2025 Ashitha's Blog — Built for NativeSoftTech Internship Task 2 • <span class="muted">Responsive Blog Demo</span>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle (show/hide nav on small screens)
+    (function() {
+      const menuBtn = document.getElementById('menuToggle');
+      const nav = document.querySelector('nav.main-nav');
+      menuBtn.addEventListener('click', () => {
+        if (nav.style.display === 'flex') {
+          nav.style.display = 'none';
+        } else {
+          nav.style.display = 'flex';
+        }
+      });
+    })();
+
+    // Sidebar toggle
+    (function() {
+      const sidebar = document.getElementById('sidebar');
+      const btn = document.getElementById('sidebarToggle');
+      btn.addEventListener('click', () => {
+        sidebar.classList.toggle('hidden');
+        // update button label
+        btn.textContent = sidebar.classList.contains('hidden') ? 'Show Sidebar' : 'Toggle Sidebar';
+      });
+    })();
+
+    // Read more toggles for summary expansion
+    (function() {
+      function toggleSummary(button, targetSummary) {
+        const moreText = targetSummary.querySelector('.more-text');
+        const dots = targetSummary.querySelector('.more-dot');
+        if (!moreText) return;
+        if (moreText.classList.contains('hidden')) {
+          moreText.classList.remove('hidden');
+          if (dots) dots.classList.add('hidden');
+          button.textContent = 'Read less';
+        } else {
+          moreText.classList.add('hidden');
+          if (dots) dots.classList.remove('hidden');
+          button.textContent = 'Read more';
+        }
+      }
+
+      // map data-target to actual summary elements
+      const mapping = {
+        'featured': document.getElementById('featuredSummary'),
+        'p1': document.querySelectorAll('.post')[1].querySelector('.summary'),
+        'p2': document.querySelectorAll('.post')[2].querySelector('.summary'),
+        'p3': document.querySelectorAll('.post')[3].querySelector('.summary')
+      };
+
+      document.querySelectorAll('.read-more').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const t = btn.getAttribute('data-target');
+          const targetSummary = mapping[t];
+          if (targetSummary) toggleSummary(btn, targetSummary);
+        });
+      });
+    })();
+
+    // small accessibility improvement - close nav when clicking a link (mobile)
+    (function() {
+      const nav = document.querySelector('nav.main-nav');
+      nav.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A' && window.innerWidth <= 980) {
+          nav.style.display = 'none';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
